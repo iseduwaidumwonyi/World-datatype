@@ -1,0 +1,376 @@
+---
+title: "countries analysis using dplyr"
+author: "DA class"
+date: "6/5/2025"
+output: html_document
+---
+
+```{r}
+
+# load all the necessary packages
+
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+# import the dataset 
+
+countries <- read.csv(file.choose())
+```
+
+```{r}
+# check the structure of the dataset
+str(countries)
+```
+
+
+```{r}
+# rename a column 
+
+countries <- countries %>% 
+  rename(Name = ï..Name)
+```
+
+```{r}
+#Q1 Show the total number of countries in the world
+
+countries %>% 
+  summarize(countries_count = n())
+
+```
+
+```{r}
+# Q2 show the first 5 records in the dataset
+
+head(countries,5)
+
+```
+
+```{r}
+# Q3. show the total number of countries in western africa
+
+countries %>% 
+  filter(Region == "Western Africa") %>% 
+  summarize(countries_count = n())
+
+```
+
+
+```{r}
+# Q4 show the top 5 most recent African countries to get independence
+
+countries %>% 
+  filter(Continent == "Africa" & IndepYear != "NULL") %>% 
+  arrange(desc(IndepYear)) %>% 
+  head(5)
+
+```
+
+```{r}
+
+# Q5. Show the number of African countries that got
+# their independence before 1960
+
+  countries %>% 
+  filter(Continent == "Africa" & IndepYear != "NULL" & IndepYear < 1960) %>% 
+  summarize(countries_count = n())
+
+```
+
+
+```{r}
+# Q6. What is the  average population of the world
+
+countries %>% 
+  summarize(avg_pop = mean(Population))
+
+```
+
+```{r}
+# Q7. Top 5 countries with the highest population
+
+countries %>% 
+  arrange(desc(Population)) %>% 
+  head(5)
+
+
+```
+
+```{r}
+
+# Q8.  Bottom 5 countries by life expectancy
+
+countries %>% 
+  arrange(LifeExpectancy) %>% 
+  head(5)
+
+```
+
+
+```{r}
+# Q9. show the African countries with indep_year of NULL value
+countries %>% 
+  filter(Continent == "Africa" & IndepYear == "NULL")
+
+```
+
+
+```{r}
+# Q10. Show the number of regions in each continent
+
+countries %>% 
+  group_by(Continent) %>% 
+  summarize(countries_count = n())
+```
+
+
+```{r}
+# Q11. Show the average life expectancy for each continent 
+
+ countries$LifeExpectancy <- as.numeric(countries$LifeExpectancy)
+ filtered <- filter(countries, LifeExpectancy != "NuLL")
+
+ filtered %>% group_by(Continent) %>% 
+   summarize(avg_lifeexp = round(mean(LifeExpectancy),2))
+
+
+```
+
+```{r}
+# Q12 List all countries in south America
+
+countries %>%  filter(Continent == "South America")
+
+
+```
+
+
+```{r}
+
+# Q13. show how many countries are in each continent
+
+countries %>% 
+  group_by(Continent) %>% 
+  summarize(size = n())
+
+```
+
+```{r}
+# Q14. Show the top 5 countries in Africa in terms of 
+# highest life_expectancy
+
+countries %>% 
+  filter(Continent == "Africa") %>% 
+  arrange(desc(LifeExpectancy)) %>% 
+  head(5)
+```
+
+```{r}
+# Q15. Show countries in western africa with life expectancy less than 50
+
+countries %>% 
+  filter(Region == "Western Africa" & LifeExpectancy < 50) 
+  
+```
+
+```{r}
+# Q16. Show the number of countries in each region for each continent in the world
+
+countries %>% 
+  group_by(Continent,Region) %>% 
+  summarize(countries_count = n())
+
+```
+
+```{r}
+# Q16B. Show the top 5 countries in the world with the highest life expectancy
+
+countries %>% 
+  arrange(desc(LifeExpectancy)) %>% 
+  head(5)
+
+```
+
+```{r}
+# Q17. Show the bottom 5 countries in the world with the lowest life expectancy 
+countries %>% 
+  arrange(LifeExpectancy) %>% 
+  head(5)
+
+```
+
+```{r}
+# Q18. Show the top 5 countries in Africa with the highest population
+
+countries %>% 
+  filter(Continent == "Africa") %>% 
+  arrange(desc(Population)) %>% 
+  head(5)
+
+```
+
+
+```{r}
+# Q19. Show the number of countries in Africa that gained independence between 1967 and 1970
+
+countries %>% 
+  filter(Continent == "Africa" & IndepYear  %in% c(1967,1968,1969,1970)) %>%
+  summarize(size = n())
+  
+```
+
+
+```{r}
+# Q20. show the number of countries in each region of Africa
+
+countries %>% 
+  filter(Continent == "Africa") %>% 
+  group_by(Region) %>% 
+  summarize(size = n())
+```
+
+
+```{r}
+# ===================================================
+
+# Data Visualization with ggplot2
+
+library(ggplot2)
+
+```
+
+
+```{r}
+# Q21. Show the number of countries in each Continent using 
+# column chart
+
+countries %>% 
+  group_by(Continent) %>% 
+  summarise(size = n()) %>%
+  ggplot(aes( x = Continent , y = size )) +
+  geom_col() 
+ 
+
+```
+
+```{r}
+# Q21b. Show the number of countries in each Continent using 
+# column chart with background colors for the columns
+
+countries %>% 
+  group_by(Continent) %>% 
+  summarise(size = n()) %>%
+  ggplot(aes( x = Continent , y = size , fill = Continent)) +
+  geom_col() +
+  guides(fill = "none") +
+ # theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+ # coord_flip() +
+  geom_text(aes(label = size , vjust = 0.5, hjust ="inward" ))
+```
+
+
+```{r}
+# Q22. Show the number of countries in each region of Africa using the
+# column chart
+
+                                     
+countries %>% 
+  filter(Continent == "Africa") %>% 
+  group_by(Region) %>% 
+  summarize(size = n()) %>% 
+  ggplot( aes( x = Region , y = size,fill = Region)) +
+  geom_col() +
+  guides(fill = "none") + 
+  geom_text(aes(label = size, vjust = "inward")) +
+  labs(title = "No of Countries By Region in Africa ")
+
+
+```
+
+
+```{r}
+
+# Q23 Using geom_boxplot(), show the 6 point summary statistics on 
+# LifeExpectancy for each Continent
+
+```
+
+
+```{r}
+# Q24 using geom_point(), show the relationship between LifeExpectancy of countries in Africa and their gnp
+
+
+```
+
+
+```{r}
+# Q25 Using the geom_point(), show the relationship between the LifeExpectancy and the population of African countries
+
+
+```
+
+```{r}
+# Q26.Using the geom_line(), show the number of countries that got
+# independence in each  year between 1960 and 1970 in Africa
+
+  
+```
+
+```{r}
+
+# Q27. Using the bar chart show the number of countries that gained independence  in each year between 1960 and 1970 in Africa
+
+
+```
+
+```{r}
+
+# Q28 Show the top 5 countries in Asia with the highest lifeexpectancy. 
+# Visualize this using the bar chart
+
+
+```
+
+
+```{r}
+
+# Q28B Show the bottom 5 countries in Africa with the lowest lifeexpectancy. 
+# Visualize this using the bar chart
+
+
+```
+
+```{r}
+
+# theme(axis.text.x = element_text(angle = 45 ,  hjust = 1))
+
+# Q29 Show the 6 point summary statistics for Lifeexpectancy in each region of Africa
+
+
+```
+
+
+```{r}
+
+# Q30 Show the histogram of lifeexpectancy of countries in Africa
+
+  
+```
+
+```{r}
+
+# Q31 show the histogram of lifeexpectancy for the following continent
+# Africa, Asia and Europe use the facet_wrap() layer 
+
+
+
+```
+
+```{r}
+# Q32 Show the histogram of population in Europe and North America using the 
+# facet wrap and filter
+
+
+```
+
