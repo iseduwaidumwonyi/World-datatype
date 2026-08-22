@@ -310,6 +310,15 @@ countries %>%
 ```{r}
 # Q24 using geom_point(), show the relationship between LifeExpectancy of countries in Africa and their gnp
 
+countries %>%
+  filter(Continent == "Africa") %>%
+  ggplot(aes(x = GNP, y = LifeExpectancy)) +
+  geom_point() +
+  labs(
+    title = "Life Expectancy and GNP in Africa",
+    x = "GNP",
+    y = "Life Expectancy"
+  )
 
 ```
 
@@ -317,6 +326,15 @@ countries %>%
 ```{r}
 # Q25 Using the geom_point(), show the relationship between the LifeExpectancy and the population of African countries
 
+countries %>%
+  filter(Continent == "Africa") %>%
+  ggplot(aes(x = Population, y = LifeExpectancy)) +
+  geom_point() +
+  labs(
+    title = "Life Expectancy and Population in Africa",
+    x = "Population",
+    y = "Life Expectancy"
+  )
 
 ```
 
@@ -324,13 +342,45 @@ countries %>%
 # Q26.Using the geom_line(), show the number of countries that got
 # independence in each  year between 1960 and 1970 in Africa
 
-  
+countries %>%
+  filter(
+    Continent == "Africa",
+    IndepYear >= 1960,
+    IndepYear <= 1970
+  ) %>%
+  group_by(IndepYear) %>%
+  summarise(size = n()) %>%
+  ggplot(aes(x = IndepYear, y = size)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "African Countries Gaining Independence, 1960-1970",
+    x = "Year",
+    y = "Number of Countries"
+  )
+
 ```
 
 ```{r}
 
 # Q27. Using the bar chart show the number of countries that gained independence  in each year between 1960 and 1970 in Africa
 
+countries %>%
+  filter(
+    Continent == "Africa",
+    IndepYear >= 1960,
+    IndepYear <= 1970
+  ) %>%
+  group_by(IndepYear) %>%
+  summarise(size = n()) %>%
+  ggplot(aes(x = IndepYear, y = size)) +
+  geom_col() +
+  geom_text(aes(label = size), vjust = -0.5) +
+  labs(
+    title = "African Countries Gaining Independence, 1960-1970",
+    x = "Year",
+    y = "Number of Countries"
+  )
 
 ```
 
@@ -339,7 +389,18 @@ countries %>%
 # Q28 Show the top 5 countries in Asia with the highest lifeexpectancy. 
 # Visualize this using the bar chart
 
-
+countries %>%
+  filter(Continent == "Asia", !is.na(LifeExpectancy)) %>%
+  arrange(desc(LifeExpectancy)) %>%
+  head(5) %>%
+  ggplot(aes(x = reorder(Name, LifeExpectancy), y = LifeExpectancy)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Top 5 Asian Countries by Life Expectancy",
+    x = "Country",
+    y = "Life Expectancy"
+  )
 ```
 
 
@@ -348,6 +409,18 @@ countries %>%
 # Q28B Show the bottom 5 countries in Africa with the lowest lifeexpectancy. 
 # Visualize this using the bar chart
 
+countries %>%
+  filter(Continent == "Africa", !is.na(LifeExpectancy)) %>%
+  arrange(LifeExpectancy) %>%
+  head(5) %>%
+  ggplot(aes(x = reorder(Name, LifeExpectancy), y = LifeExpectancy)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Bottom 5 African Countries by Life Expectancy",
+    x = "Country",
+    y = "Life Expectancy"
+  )
 
 ```
 
@@ -357,6 +430,16 @@ countries %>%
 
 # Q29 Show the 6 point summary statistics for Lifeexpectancy in each region of Africa
 
+countries %>%
+  filter(Continent == "Africa", !is.na(LifeExpectancy)) %>%
+  ggplot(aes(x = Region, y = LifeExpectancy)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(
+    title = "Life Expectancy by Region in Africa",
+    x = "Region",
+    y = "Life Expectancy"
+  )
 
 ```
 
@@ -365,7 +448,16 @@ countries %>%
 
 # Q30 Show the histogram of lifeexpectancy of countries in Africa
 
-  
+countries %>%
+  filter(Continent == "Africa", !is.na(LifeExpectancy)) %>%
+  ggplot(aes(x = LifeExpectancy)) +
+  geom_histogram(binwidth = 5) +
+  labs(
+    title = "Life Expectancy of African Countries",
+    x = "Life Expectancy",
+    y = "Frequency"
+  )
+
 ```
 
 ```{r}
@@ -373,7 +465,19 @@ countries %>%
 # Q31 show the histogram of lifeexpectancy for the following continent
 # Africa, Asia and Europe use the facet_wrap() layer 
 
-
+countries %>%
+  filter(
+    Continent %in% c("Africa", "Asia", "Europe"),
+    !is.na(LifeExpectancy)
+  ) %>%
+  ggplot(aes(x = LifeExpectancy)) +
+  geom_histogram(binwidth = 5) +
+  facet_wrap(~ Continent) +
+  labs(
+    title = "Life Expectancy in Africa, Asia and Europe",
+    x = "Life Expectancy",
+    y = "Frequency"
+  )
 
 ```
 
@@ -381,6 +485,16 @@ countries %>%
 # Q32 Show the histogram of population in Europe and North America using the 
 # facet wrap and filter
 
+countries %>%
+  filter(Continent %in% c("Europe", "North America")) %>%
+  ggplot(aes(x = Population)) +
+  geom_histogram(bins = 20) +
+  facet_wrap(~ Continent, scales = "free") +
+  labs(
+    title = "Population Distribution in Europe and North America",
+    x = "Population",
+    y = "Frequency"
+  )
 
 ```
 
