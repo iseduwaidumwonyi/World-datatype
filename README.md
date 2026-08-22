@@ -1,38 +1,58 @@
-# World Dataset Analysis
+# World Dataset Analysis in R
 
-This project was completed as part of my data analysis learning and practice using R and RStudio.
+This project was completed as part of my Data Analysis training and was used to practise analysing and visualising data with R.
 
-## About the Project
+## Project Overview
 
-The project uses a world dataset to practise working with data in R. The aim was to develop my skills in exploring data, working with different data types and presenting information visually.
+The project uses a dataset containing information about countries, including continent, region, independence year, population, life expectancy and GNP.
 
-## Tools Used
+I used the dataset to answer a number of questions about countries and regions and to practise working with data in R.
+
+## Tools and Libraries
 
 * R
 * RStudio
 * R Markdown
+* dplyr
 * ggplot2
+
+## Analysis Completed
+
+The project includes examples of:
+
+* Importing and inspecting a dataset
+* Renaming columns
+* Filtering data using different conditions
+* Grouping and summarising data
+* Counting countries by continent and region
+* Calculating average population and life expectancy
+* Identifying countries with the highest and lowest population or life expectancy
+* Analysing African countries by independence year
+* Working with missing values
+* Creating column charts using ggplot2
+
+Some of the questions explored include:
+
+* Number of countries in the dataset
+* Number of countries in West Africa
+* Most recently independent African countries
+* African countries that gained independence before 1960
+* Countries with the highest populations
+* Countries with the highest and lowest life expectancy
+* Number of countries by continent and region
+* Life expectancy across continents
 
 ## Repository Files
 
-* `world dataset for R class.Rmd` – R Markdown file containing the analysis and R code.
-* `world dataset.csv` – Dataset used for the project.
-* `World-datatype.Rproj` – RStudio project file.
-
-## What I Practised
-
-Through this project, I practised:
-
-* Importing and exploring data in R
-* Working with datasets and different data types
-* Using R commands to examine data
-* Creating data visualisations with ggplot2
-* Organising analysis and code using R Markdown
-* Interpreting results from data
+* `world dataset for R class.Rmd` – R Markdown file containing the analysis and code
+* `world dataset.csv` – Dataset used for the analysis
+* `World-datatype.Rproj` – RStudio project file
 
 ## What I Learned
 
-This project helped me improve my understanding of how data can be explored, analysed and presented using R. It also gave me practical experience using RStudio and R Markdown to keep code, analysis and explanations together in one project.
+This project helped me gain practical experience using R to explore and analyse data. I became more comfortable with filtering, grouping and summarising datasets using dplyr and presenting results using ggplot2.
+
+It also helped me understand the importance of checking the structure and quality of data before drawing conclusions from it.
 
 ## Author
 
