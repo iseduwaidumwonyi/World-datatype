@@ -1,6 +1,6 @@
 ---
 title: "countries analysis using dplyr"
-author: "DA class"
+author: "Don Iseduwa Idumwonyi"
 date: "6/5/2025"
 output: html_document
 ---
